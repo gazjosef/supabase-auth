@@ -1,18 +1,23 @@
-// import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
-// import viteLogo from "/vite.svg";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+// import ProtectedRoute from "./components/ProtectedRoute";
 
-function App() {
-  // const [count, setCount] = useState(0);
-
+export default function App() {
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <h1 className="text-3xl font-bold text-blue-600">
-        Tailwind is working 🚀
-      </h1>
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route
+        path="/dashboard"
+        element={
+          // <ProtectedRoute>
+          <Dashboard />
+          // </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Login />} />
+    </Routes>
   );
 }
-
-export default App;
