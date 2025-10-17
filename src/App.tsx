@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-// import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 export default function App() {
   return (
@@ -12,9 +12,9 @@ export default function App() {
       <Route
         path="/dashboard"
         element={
-          // <ProtectedRoute>
-          <Dashboard />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
         }
       />
       <Route path="*" element={<Login />} />
