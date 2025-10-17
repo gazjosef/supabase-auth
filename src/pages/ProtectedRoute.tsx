@@ -1,6 +1,7 @@
-import { ReactNode, useEffect } from "react";
+import type { ReactNode } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // assuming you have an AuthContext
+import { useAuth } from "../context/useAuth"; // assuming you have an AuthContext
 import { supabase } from "../lib/supabaseClient";
 
 interface ProtectedRouteProps {
@@ -13,11 +14,19 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) {
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error("Error fetching user:", error);
+        navigate("/login");
+        return;
+      }
+
+      const currentUser = data?.user;
+      if (!currentUser) {
         navigate("/login");
       } else {
-        setUser(data.user);
+        setUser(currentUser);
       }
     };
 
@@ -34,5 +43,9 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  return <>{user ? children : null}</>;
+  if (!user) {
+    return null; // prevents flashing before navigation
+  }
+
+  return <>{children}</>;
 }
